@@ -3,15 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Simulador de Ahorro</title>
+  <title>Simulador de Ahorro con DOM</title>
+  <link rel="stylesheet" href="./styles.css">
   <script defer src="js/simulador.js"></script>
 </head>
 <body>
   <h1>Simulador de Ahorro Personal</h1>
   <p>
-    Este simulador permite calcular cuánto podés ahorrar mensualmente según tus ingresos y gastos. 
-    Utiliza variables, condicionales, ciclos y funciones para procesar datos ingresados por el usuario. 
-    Toda la interacción se realiza a través de la consola y cuadros de diálogo (prompt, alert, confirm).
+    Ingresá tus ingresos y gastos por mes, y calcularemos automáticamente cuánto podés ahorrar.<br>
+    Toda la interacción se hace en esta página, y tus datos se guardarán en el navegador.
   </p>
+
+  <form id="form-ingresos">
+    <h2>Datos mensuales</h2>
+    <div id="meses-container"></div>
+    <button type="submit">Calcular Ahorro</button>
+  </form>
+
+  <div id="resultado" style="margin-top: 20px;"></div>
 </body>
 </html>

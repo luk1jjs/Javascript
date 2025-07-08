@@ -1,53 +1,90 @@
 
+// crear objetos de mes con ingreso y gasto
+function MesFinanciero(nombre, ingreso, gasto) {
+  this.nombre = nombre;
+  this.ingreso = ingreso;
+  this.gasto = gasto;
+  this.ahorro = function () {
+    return this.ingreso - this.gasto;
+  };
+}
+
+// Constantes y datos
 const meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio"];
-let ingresos = [];
-let gastos = [];
+let registros = []; // array de objetos MesFinanciero
 
+const form = document.getElementById("form-ingresos");
+const mesesContainer = document.getElementById("meses-container");
+const resultadoDiv = document.getElementById("resultado");
 
-function pedirDatosMensuales() {
+// crear inputs
+meses.forEach((mes, index) => {
+  const ingresoInput = document.createElement("input");
+  ingresoInput.type = "number";
+  ingresoInput.placeholder = `Ingresos en ${mes}`;
+  ingresoInput.id = `ingreso-${index}`;
+  ingresoInput.required = true;
+
+  const gastoInput = document.createElement("input");
+  gastoInput.type = "number";
+  gastoInput.placeholder = `Gastos en ${mes}`;
+  gastoInput.id = `gasto-${index}`;
+  gastoInput.required = true;
+
+  mesesContainer.appendChild(ingresoInput);
+  mesesContainer.appendChild(gastoInput);
+  mesesContainer.appendChild(document.createElement("br"));
+});
+
+// Evento al enviar el formulario
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  registros = [];
+
   for (let i = 0; i < meses.length; i++) {
-    let ingreso = parseFloat(prompt(`Ingresos en ${meses[i]}:`));
-    let gasto = parseFloat(prompt(`Gastos en ${meses[i]}:`));
-
-    if (isNaN(ingreso) || isNaN(gasto)) {
-      alert("Ingresaste un valor no válido. Se cancelará el simulador.");
-      return false;
-    }
-
-    ingresos.push(ingreso);
-    gastos.push(gasto);
+    const ingreso = parseFloat(document.getElementById(`ingreso-${i}`).value);
+    const gasto = parseFloat(document.getElementById(`gasto-${i}`).value);
+    registros.push(new MesFinanciero(meses[i], ingreso, gasto));
   }
-  return true;
+
+  mostrarResumen(registros);
+  guardarDatosLocalStorage();
+});
+
+function mostrarResumen(array) {
+  resultadoDiv.innerHTML = "";
+
+  array.forEach((registro) => {
+    const p = document.createElement("p");
+    p.textContent = `En ${registro.nombre} ahorraste $${registro.ahorro()}`;
+    resultadoDiv.appendChild(p);
+  });
+
+  const total = array.reduce((acc, obj) => acc + obj.ahorro(), 0);
+  const promedio = total / array.length;
+
+  const resumen = document.createElement("p");
+  resumen.innerHTML = `<strong>Total Ahorrado:</strong> $${total} <br><strong>Promedio Mensual:</strong> $${promedio.toFixed(2)}`;
+  resultadoDiv.appendChild(resumen);
 }
 
+function guardarDatosLocalStorage() {
+  localStorage.setItem("datosAhorro", JSON.stringify(registros));
+  console.log("Datos guardados en LocalStorage:", registros);
+}
 
-function calcularAhorros() {
-  let ahorros = [];
-  for (let i = 0; i < meses.length; i++) {
-    let ahorro = ingresos[i] - gastos[i];
-    ahorros.push(ahorro);
-    console.log(`En ${meses[i]}, tu ahorro fue de $${ahorro}`);
+window.addEventListener("DOMContentLoaded", () => {
+  const datosGuardados = localStorage.getItem("datosAhorro");
+  if (datosGuardados) {
+    const datos = JSON.parse(datosGuardados);
+    registros = datos.map((item) => new MesFinanciero(item.nombre, item.ingreso, item.gasto));
+
+    registros.forEach((registro, i) => {
+      document.getElementById(`ingreso-${i}`).value = registro.ingreso;
+      document.getElementById(`gasto-${i}`).value = registro.gasto;
+    });
+
+    mostrarResumen(registros);
   }
-  return ahorros;
-}
-
-
-function mostrarResumen(ahorros) {
-  let total = ahorros.reduce((acc, val) => acc + val, 0);
-  let promedio = total / ahorros.length;
-  alert(`Resumen de ahorro:\nTotal ahorrado: $${total}\nPromedio mensual: $${promedio.toFixed(2)}`);
-  console.log("Resumen mostrado al usuario.");
-}
-
-
-if (confirm("¿Querés comenzar el simulador de ahorro?")) {
-  if (pedirDatosMensuales()) {
-    const resultadoAhorros = calcularAhorros();
-    mostrarResumen(resultadoAhorros);
-  } else {
-    console.log("Simulador cancelado por datos inválidos.");
-  }
-} else {
-  alert("Simulador cancelado.");
-  console.log("El usuario canceló el inicio del simulador.");
-}
+});

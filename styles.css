@@ -1,0 +1,42 @@
+h1 {
+   text-align: center;
+   font-size: 50px;
+}
+
+p {
+  text-align: center;
+  color: #333;
+  font-size: 20px;
+}
+
+form {
+    text-align: center;
+    font-size: 35px;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: black;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+ 
+h2 {
+    font-size: 40px;
+
+}
+
+#resultado {
+text-align: center;
+}
+
+#resultado p {
+  margin: 10px 0;
+  font-weight: 500;
+  color: #2e7d32;
+  text-align: center;
+}

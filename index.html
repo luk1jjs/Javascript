@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simulador de Ahorro Personal</title>
+  <link rel="stylesheet" href="./styles.css">
+  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.0/dist/sweetalert2.min.css" rel="stylesheet">
+  <script defer src="js/simulador.js"></script>
+</head>
+<body>
+  <h1>Simulador de Ahorro Personal</h1>
+  <p>
+    Ingresá tus ingresos y gastos por mes, y calcularemos automáticamente cuánto podés ahorrar.<br>
+    Toda la interacción se hace en esta página, y tus datos se guardarán en el navegador.
+  </p>
+
+  <form id="form-ingresos">
+    <h2>Datos mensuales</h2>
+    <div id="meses-container"></div>
+    <button type="submit">Calcular Ahorro</button>
+  </form>
+
+  <div id="resultado" style="margin-top: 20px;"></div>
+</body>
+</html>
